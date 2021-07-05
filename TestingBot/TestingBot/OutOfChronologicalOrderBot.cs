@@ -11,7 +11,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TestingBot
 {
-    public class OutOfChronologicalOrderBot : IBot
+    public class OutOfChronologicalOrderBot
     {
         private static readonly TelegramBotClient MyClient = ClientInitializer.InitClient();
         private static Queue<MessageEventArgs> MyQueue = new();
@@ -39,27 +39,25 @@ namespace TestingBot
                 MyQueue.Enqueue(ArgEvent);
 
                var MyBtn = new InlineKeyboardButton();
-               MyBtn.Text = "I'm Hungry";
+               MyBtn.Text = "Tengo Hambre";
                MyBtn.CallbackData = "eat";
 
                var MyKeyboard = new InlineKeyboardMarkup(MyBtn);
-            try
-            {
-                var Message = MyQueue.Dequeue().Message;
-                if (Message == null || Message.Type != MessageType.Text)
-                    return;
+                Console.WriteLine(MyQueue.Count.ToString());
+                try
+                {
+                    var Message = MyQueue.Dequeue().Message;
+                    if (Message == null || Message.Type != MessageType.Text)
+                        return;
 
-                await MyClient.SendTextMessageAsync(Message.Chat.Id,
-                                                    $"Succioname el pito {Message.Chat.Username}",
-                                                    replyMarkup: MyKeyboard);
-            }
-            catch (Exception)
-            {
-                MyQueue.Enqueue(ArgEvent);
-                await MyClient.SendTextMessageAsync(ArgEvent.Message.Chat.Id,
-                                                    $"Muchas peticiones espere un momento.");
-                Thread.Sleep(1000);
-            }
+                    await MyClient.SendTextMessageAsync(Message.Chat.Id,
+                                                        $"Hola! {Message.Chat.Username}",
+                                                        replyMarkup: MyKeyboard);
+                }
+                catch (Exception)
+                {
+                    MyQueue.Enqueue(ArgEvent);
+                }
         }
 
         [Obsolete]
