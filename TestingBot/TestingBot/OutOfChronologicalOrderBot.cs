@@ -26,7 +26,6 @@ namespace TestingBot
 
             MyClient.OnMessage += ReadMessagesEvent;
             MyClient.OnReceiveError += ErrorReadEvent;
-            MyClient.OnCallbackQuery += CallBackQueryRead;
 
             MyClient.StartReceiving(Array.Empty<UpdateType>());
             Console.WriteLine("Listening Messages...");
@@ -52,8 +51,12 @@ namespace TestingBot
                             await MyClient.SendTextMessageAsync(Message.Chat.Id,
                                                     $"Send me a message with this format:");
                             await MyClient.SendTextMessageAsync(Message.Chat.Id,
-                                                    $" ArtistName-SongName");
-                        return;
+                                                    $" ArtistName - SongName");
+                    await MyClient.SendTextMessageAsync(Message.Chat.Id,
+                                                   $"If the song have two artist use (and) between their names, if it has more than two" +
+                                                   $" type every artist between spaces and put (and) to name the last one. " +
+                                                   $"Remember to type them in order.");
+                    return;
                      }
 
                     if(Message.Text.Contains('-'))
@@ -61,23 +64,25 @@ namespace TestingBot
                         await MyClient.SendTextMessageAsync(Message.Chat.Id,
                                                         $"Looking for lyrics...");
 
-                        var _Message = Message.Text.Split('-');
+                        var _Message = Message.Text.Split(" - ");
                         var Response = WebScrapper.Scrap(_Message[0], _Message[1]);
-
-                        await MyClient.SendTextMessageAsync(Message.Chat.Id, Response);
 
                         if (Response == "Couldn't find the song or the artist")
                         {
-                            await MyClient.SendTextMessageAsync(Message.Chat.Id, 
-                                                                "Remember to not type a backspace between the names and the dash");
-                        return;
+                            await MyClient.SendTextMessageAsync(Message.Chat.Id,
+                                                                "Remember to type a backspace between the names and the dash, " +
+                                                                "and don't use especial characters.");
                         }
-                    return;
+
+
+                        await MyClient.SendTextMessageAsync(Message.Chat.Id, Response);
+                        return;
                     }
+
                 else
                 {
                     await MyClient.SendTextMessageAsync(Message.Chat.Id,
-                                                                "Remember to not type a backspace between the names and the dash");
+                                                                $"Use /help for more information");
                     return;
                 }
 
@@ -94,16 +99,6 @@ namespace TestingBot
             Console.WriteLine("Error Recibido: {0} - {1}", 
                               ArgEvent.ApiRequestException.ErrorCode, 
                               ArgEvent.ApiRequestException.Message);
-        }
-
-        [Obsolete]
-        static async void CallBackQueryRead(object sender, CallbackQueryEventArgs CBEvent)
-        {
-            if (CBEvent.CallbackQuery.Data.Equals("eat"))
-            {
-                await MyClient.SendTextMessageAsync(CBEvent.CallbackQuery.Message.Chat.Id,
-                                                $"Come algo pana {CBEvent.CallbackQuery.Message.Chat.Username}");
-            }
         }
     }
 }

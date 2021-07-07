@@ -6,7 +6,6 @@ namespace GeniusScrapper
     public class WebScrapper
     {
         private static readonly string BaseURL = "https://genius.com/amp/";
-        /**/
         public static string Scrap(string artist, string song)
         {
 
@@ -20,9 +19,9 @@ namespace GeniusScrapper
                     doc.LoadHtml(Data);
 
                     Console.WriteLine("Looking for lyrics...");
-
-                    var Header = doc.DocumentNode.SelectSingleNode("//div[@class='lyrics']");
-                    string Lyrics = Header.InnerText;
+                    Console.WriteLine("Searching " + song + " by " + artist);
+                    var HeaderLyrics = doc.DocumentNode.SelectSingleNode("//div[@class='lyrics']");
+                    string Lyrics = HeaderLyrics.InnerText;
                     Console.WriteLine(Lyrics);
                     return Lyrics;
                 }
