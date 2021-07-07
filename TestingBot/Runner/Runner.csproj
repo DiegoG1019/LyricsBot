@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GeniusScrapper\GeniusScrapper.csproj" />
     <ProjectReference Include="..\TestingBot\TestingBot.csproj" />
   </ItemGroup>
 

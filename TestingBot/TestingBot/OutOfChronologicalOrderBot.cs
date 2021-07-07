@@ -8,6 +8,7 @@ using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using GeniusScrapper;
 
 namespace TestingBot
 {
@@ -15,6 +16,7 @@ namespace TestingBot
     {
         private static readonly TelegramBotClient MyClient = ClientInitializer.InitClient();
         private static Queue<MessageEventArgs> MyQueue = new();
+        private static bool Loop = true;
 
         [Obsolete]
         public void Main()
@@ -35,24 +37,50 @@ namespace TestingBot
         [Obsolete]
         static async void ReadMessagesEvent(object sender, MessageEventArgs ArgEvent)
         {
-            if (MyQueue.Count == 0)
+
                 MyQueue.Enqueue(ArgEvent);
 
-               var MyBtn = new InlineKeyboardButton();
-               MyBtn.Text = "Tengo Hambre";
-               MyBtn.CallbackData = "eat";
-
-               var MyKeyboard = new InlineKeyboardMarkup(MyBtn);
-                Console.WriteLine(MyQueue.Count.ToString());
                 try
                 {
                     var Message = MyQueue.Dequeue().Message;
+
                     if (Message == null || Message.Type != MessageType.Text)
                         return;
 
+                     if(Message.Text.Split(' ').First() == "/help")
+                     {
+                            await MyClient.SendTextMessageAsync(Message.Chat.Id,
+                                                    $"Send me a message with this format:");
+                            await MyClient.SendTextMessageAsync(Message.Chat.Id,
+                                                    $" ArtistName-SongName");
+                        return;
+                     }
+
+                    if(Message.Text.Contains('-'))
+                    {
+                        await MyClient.SendTextMessageAsync(Message.Chat.Id,
+                                                        $"Looking for lyrics...");
+
+                        var _Message = Message.Text.Split('-');
+                        var Response = WebScrapper.Scrap(_Message[0], _Message[1]);
+
+                        await MyClient.SendTextMessageAsync(Message.Chat.Id, Response);
+
+                        if (Response == "Couldn't find the song or the artist")
+                        {
+                            await MyClient.SendTextMessageAsync(Message.Chat.Id, 
+                                                                "Remember to not type a backspace between the names and the dash");
+                        return;
+                        }
+                    return;
+                    }
+                else
+                {
                     await MyClient.SendTextMessageAsync(Message.Chat.Id,
-                                                        $"Hola! {Message.Chat.Username}",
-                                                        replyMarkup: MyKeyboard);
+                                                                "Remember to not type a backspace between the names and the dash");
+                    return;
+                }
+
                 }
                 catch (Exception)
                 {

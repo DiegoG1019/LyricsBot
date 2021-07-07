@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingBot", "TestingBot\TestingBot.csproj", "{656D5266-2DB7-428B-B931-74A335950816}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingBot", "TestingBot\TestingBot.csproj", "{656D5266-2DB7-428B-B931-74A335950816}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{9FD5E409-4D15-497B-A0BE-B6746F55124B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Runner", "Runner\Runner.csproj", "{9FD5E409-4D15-497B-A0BE-B6746F55124B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeniusScrapper", "GeniusScrapper\GeniusScrapper.csproj", "{AFD56735-CE37-4CF6-A3D6-BAE67F8A3866}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9FD5E409-4D15-497B-A0BE-B6746F55124B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FD5E409-4D15-497B-A0BE-B6746F55124B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FD5E409-4D15-497B-A0BE-B6746F55124B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFD56735-CE37-4CF6-A3D6-BAE67F8A3866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFD56735-CE37-4CF6-A3D6-BAE67F8A3866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFD56735-CE37-4CF6-A3D6-BAE67F8A3866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFD56735-CE37-4CF6-A3D6-BAE67F8A3866}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
