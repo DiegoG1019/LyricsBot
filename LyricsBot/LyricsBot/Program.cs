@@ -16,12 +16,12 @@ namespace LyricsBot
 
         static async Task Main(string[] args)
         {
-            await LyricsBot.Init();
-
             Settings<BotSettings>.Initialize(ConfigDir, "BotSettings.cfg");
             if (Settings<BotSettings>.Current.LyricsBotAPIKey is null)
                 throw new InvalidDataException
                     ($"Could not find a valid API Key for LyricsBot in the BotSettings file, fill it out in {Path.GetFullPath(Path.Combine(ConfigDir, "BotSettings.cfg.json"))}");
+
+            await LyricsBot.Init();
 
             while (true)
                 await Task.Delay(200); //It really doesn't have much else to do other than to wait for input, and everything else is done on background threads
