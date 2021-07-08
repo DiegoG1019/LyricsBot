@@ -12,6 +12,6 @@ namespace LyricsBot
         public string SettingsType => "LyricsBot.BotSettings";
         public ulong Version => 0;
 
-        public string BotAPIKey { get; init; } = "1882098106:AAFQFYLC4bWYPCgamIIJh8VhpflXNN_DitA";
+        public string LyricsBotAPIKey { get; init; } = "1882098106:AAFQFYLC4bWYPCgamIIJh8VhpflXNN_DitA";
     }
 }

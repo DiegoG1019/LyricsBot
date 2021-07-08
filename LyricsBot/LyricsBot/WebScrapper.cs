@@ -1,12 +1,20 @@
-﻿using HtmlAgilityPack;
+﻿using DiegoG.TelegramBot;
+using DiegoG.TelegramBot.Types;
+using HtmlAgilityPack;
+using Serilog;
 using System;
 using System.Net;
-namespace GeniusScrapper
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Telegram.Bot.Types;
+
+namespace LyricsBot
 {
-    public class WebScrapper
+    [BotCommand]
+    public class WebScraper : Default
     {
         private static readonly string BaseURL = "https://genius.com/amp/";
-        public static string Scrap(string artist, string song)
+        public static string Scrape(string artist, string song)
         {
 
             var NewUrl = Format(artist, song);
@@ -18,19 +26,19 @@ namespace GeniusScrapper
                     HtmlDocument doc = new();
                     doc.LoadHtml(Data);
 
-                    Console.WriteLine("Looking for lyrics...");
-                    Console.WriteLine("Searching " + song + " by " + artist);
+                    Log.Information("Searching for" + song + " by " + artist);
                     var HeaderLyrics = doc.DocumentNode.SelectSingleNode("//div[@class='lyrics']");
                     string Lyrics = HeaderLyrics.InnerText;
-                    Console.WriteLine(Lyrics);
+                    Log.Verbose(Lyrics);
                     return Lyrics;
                 }
             }
             catch (Exception)
             {
-                return "Couldn't find the song or the artist";
+                return "Could not find the requested song/artist";
             }
         }
+
         private static string Format(string artist, string song)
         {
             artist = artist.ToLower();
@@ -40,6 +48,21 @@ namespace GeniusScrapper
             string NewUrl = BaseURL + artist + "-" + song + "-lyrics";
 
             return NewUrl;
+        }
+
+        public override async Task<(string Result, bool Hold)> Action(BotCommandArguments args)
+        {
+            return Task.FromResult(Scrape());
+        }
+
+        public override Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Cancel(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

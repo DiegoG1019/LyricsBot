@@ -1,14 +1,16 @@
 ﻿using System;
-using TestingBot;
-using GeniusScrapper;
-namespace Runner
+using System.Threading.Tasks;
+
+namespace LyricsBot
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            OutOfChronologicalOrderBot Init = new();
-            Init.Main();
+            await LyricsBot.Init();
+
+            while (true)
+                await Task.Delay(200); //It really doesn't have much else to do other than to wait for input, and everything else is done on background threads
         }
     }
 }
