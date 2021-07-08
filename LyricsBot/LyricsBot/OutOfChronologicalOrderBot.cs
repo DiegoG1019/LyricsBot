@@ -9,29 +9,14 @@ using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using GeniusScrapper;
+using Serilog;
+using DiegoG.TelegramBot;
 
 namespace TestingBot
 {
     public class OutOfChronologicalOrderBot
     {
-        private static readonly TelegramBotClient MyClient = ClientInitializer.InitClient();
-        private static Queue<MessageEventArgs> MyQueue = new();
-        private static bool Loop = true;
-
-        [Obsolete]
-        public void Main()
-        {
-            var MyBot = MyClient.GetMeAsync().Result;
-            Console.WriteLine($"Connected to {MyBot.Username}");
-
-            MyClient.OnMessage += ReadMessagesEvent;
-            MyClient.OnReceiveError += ErrorReadEvent;
-
-            MyClient.StartReceiving(Array.Empty<UpdateType>());
-            Console.WriteLine("Listening Messages...");
-            Console.ReadKey();
-            MyClient.StopReceiving();
-        }
+        public BotCommandProcessor Processor { get; set; }
 
         [Obsolete]
         static async void ReadMessagesEvent(object sender, MessageEventArgs ArgEvent)
@@ -96,9 +81,26 @@ namespace TestingBot
         [Obsolete]
         static void ErrorReadEvent(object sender, ReceiveErrorEventArgs ArgEvent)
         {
-            Console.WriteLine("Error Recibido: {0} - {1}", 
-                              ArgEvent.ApiRequestException.ErrorCode, 
-                              ArgEvent.ApiRequestException.Message);
+            Log.Error($"An Error Ocurred: ({ArgEvent.ApiRequestException.ErrorCode}) {ArgEvent.ApiRequestException.Message}");
+        }
+
+        public void Main()
+        {
+            var MyBot = MyClient.GetMeAsync().Result;
+            Console.WriteLine($"Connected to {MyBot.Username}");
+
+            MyClient.OnMessage += ReadMessagesEvent;
+            MyClient.OnReceiveError += ErrorReadEvent;
+
+            MyClient.StartReceiving(Array.Empty<UpdateType>());
+            Console.WriteLine("Listening Messages...");
+            Console.ReadKey();
+            MyClient.StopReceiving();
+
+            AppDomain.CurrentDomain.ProcessExit += (s, a) =>
+            {
+                
+            };
         }
     }
 }
