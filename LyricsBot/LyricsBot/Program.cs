@@ -1,7 +1,9 @@
 ﻿using DiegoG.Utilities.Settings;
+using DiegoG.TelegramBot;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace LyricsBot
 {
@@ -16,13 +18,28 @@ namespace LyricsBot
 
         static async Task Main(string[] args)
         {
-            Settings<BotSettings>.Initialize(ConfigDir, "BotSettings.cfg");
+            Settings<BotSettings>.Initialize(ConfigDir, "BotSettings.cfg", false);
             if (Settings<BotSettings>.Current.LyricsBotAPIKey is null)
                 throw new InvalidDataException
                     ($"Could not find a valid API Key for LyricsBot in the BotSettings file, fill it out in {Path.GetFullPath(Path.Combine(ConfigDir, "BotSettings.cfg.json"))}");
 
             await LyricsBot.Init();
 
+            {
+                var logger = new LoggerConfiguration()
+                    .MinimumLevel.Verbose()
+                    .WriteTo.Console()
+                    .WriteTo.File(Path.Combine(ConfigDir, "logs", ".log"), rollingInterval: RollingInterval.Hour);
+
+                var loc = Settings<BotSettings>.Current.LogOutputChannel;
+                if (loc is not null)
+                    logger.WriteTo.TelegramBot(loc, LyricsBot.Processor.BotClient, Serilog.Events.LogEventLevel.Information, "LyricsBot");
+
+                Log.Logger = logger.CreateLogger();
+            }
+
+            Log.Information("==========================");
+            Log.Information("Started LyricsBot");
             while (true)
                 await Task.Delay(200); //It really doesn't have much else to do other than to wait for input, and everything else is done on background threads
         }

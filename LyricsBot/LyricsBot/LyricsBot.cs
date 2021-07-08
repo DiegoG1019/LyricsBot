@@ -30,8 +30,10 @@ namespace LyricsBot
 
             AppDomain.CurrentDomain.ProcessExit += (s, a) =>
             {
+                Log.Information("Stopping LyricsBot");
                 bot.StopReceiving();
                 Processor.MessageQueue.Stop();
+                Log.Information("Stopped LyricsBot");
             };
         }
     }

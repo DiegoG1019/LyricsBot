@@ -13,5 +13,6 @@ namespace LyricsBot
         public ulong Version => 0;
 
         public string? LyricsBotAPIKey { get; init; } = null;
+        public long? LogOutputChannel { get; init; } = null;
     }
 }
