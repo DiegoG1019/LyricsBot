@@ -2,10 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DiegoG.TelegramBot" Version="1.2.0" />
+    <PackageReference Include="DiegoG.TelegramBot" Version="1.2.4" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.34" />
     <PackageReference Include="Telegram.Bot" Version="16.0.0" />
   </ItemGroup>

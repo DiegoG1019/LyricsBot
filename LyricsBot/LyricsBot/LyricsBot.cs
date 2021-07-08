@@ -31,6 +31,7 @@ namespace LyricsBot
             AppDomain.CurrentDomain.ProcessExit += (s, a) =>
             {
                 bot.StopReceiving();
+                Processor.MessageQueue.Stop();
             };
         }
     }
