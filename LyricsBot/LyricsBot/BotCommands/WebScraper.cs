@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
-namespace LyricsBot
+namespace LyricsBot.BotCommands
 {
     [BotCommand]
     public class WebScraper : Default

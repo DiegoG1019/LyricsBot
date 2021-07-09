@@ -23,8 +23,6 @@ namespace LyricsBot
                 throw new InvalidDataException
                     ($"Could not find a valid API Key for LyricsBot in the BotSettings file, fill it out in {Path.GetFullPath(Path.Combine(ConfigDir, "BotSettings.cfg.json"))}");
 
-            await LyricsBot.Init();
-
             {
                 var logger = new LoggerConfiguration()
                     .MinimumLevel.Verbose()
@@ -32,11 +30,11 @@ namespace LyricsBot
                     .WriteTo.File(Path.Combine(ConfigDir, "logs", ".log"), rollingInterval: RollingInterval.Hour);
 
                 var loc = Settings<BotSettings>.Current.LogOutputChannel;
-                if (loc is not null)
-                    logger.WriteTo.TelegramBot(loc, LyricsBot.Processor.BotClient, Serilog.Events.LogEventLevel.Information, "LyricsBot");
 
                 Log.Logger = logger.CreateLogger();
             }
+
+            await LyricsBot.Init();
 
             Log.Information("==========================");
             Log.Information("Started LyricsBot");
