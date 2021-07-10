@@ -15,7 +15,6 @@ namespace LyricsBot
             throw new InvalidOperationException("No \"ConfigDir\" Environment Variable provided, and the current platform is not supported for a default location")
             );
 
-
         static async Task Main(string[] args)
         {
             Settings<BotSettings>.Initialize(ConfigDir, "BotSettings.cfg", false);
@@ -38,6 +37,7 @@ namespace LyricsBot
 
             Log.Information("==========================");
             Log.Information("Started LyricsBot");
+
             while (true)
                 await Task.Delay(200); //It really doesn't have much else to do other than to wait for input, and everything else is done on background threads
         }
